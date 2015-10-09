@@ -13,19 +13,14 @@ function getSiteName() {
 
 
 function getQueryText() {
-    var text = document.getElementById('inputword').value;
-    if (isWordsList(text)) {
-        return text;
-    } else {
-        return '';
-    }
+    return document.getElementById('inputword').value;
 }
 
 
 function gotoDictSite() {
     var text = getQueryText();
 
-    if (text === '') {
+    if (!isWordsList(text)) {
         return;
     }
 
@@ -52,7 +47,7 @@ function translateSelection() {
 
         $.ajax({
             url: query_url,
-            timeout: 3000, // 3 seconds
+            timeout: 4000, // 4 seconds
             success: 
                 function render_result(data) {
                     newDoc = document.implementation.createHTMLDocument('Result');

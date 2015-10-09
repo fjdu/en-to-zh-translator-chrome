@@ -59,14 +59,15 @@ function format_html_dict_cn(data, url) {
     var el = document.createElement( 'html' );
     el.innerHTML = data;
 
-    var ph_el = el.getElementsByClassName( 'phonetic' )
+    var ph_el = el.getElementsByClassName( 'phonetic' );
 
-    var basic_el = el.getElementsByClassName( 'layout dual' );
-    if (basic_el.length == 0) {
-        basic_el = el.getElementsByClassName( 'layout detail' );
-    }
+    var basic_el = el.getElementsByClassName( 'layout detail' );
+
     if (basic_el.length == 0) {
         basic_el = el.getElementsByClassName( 'basic clearfix' );
+    }
+    if (basic_el.length == 0) {
+        basic_el = el.getElementsByClassName( 'layout dual' );
     }
 
     var ph = '', basic = '';
@@ -174,7 +175,16 @@ function handleMouseDown (e) {
 
 
 function isWordsList(text) {
-    return true;
+    // Only letters, digits, space, '_', and '.' are allowed/
+    var tmp = text;
+    tmp = tmp.replace(/\s+/mg, '');
+    tmp = tmp.replace(/\w+/mg, '');
+    tmp = tmp.replace(/\.+/mg, '');
+    if (tmp.length === 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -209,7 +219,7 @@ function keyDownHandler(e) {
 
             $.ajax({
                 url: query_url,
-                timeout: 2000, // 2 seconds
+                timeout: 4000, // 4 seconds
                 success: 
                     function render_result(data) {
                     
@@ -230,7 +240,7 @@ function keyDownHandler(e) {
 
                         function renderBubble(x, y, selection) {
                             var maxheight = 320;
-                            var maxwidth  = 256;
+                            var maxwidth  = 400;
 
                             var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
                             var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
