@@ -50,7 +50,17 @@ function format_query_url(site, text) {
             return 'https://dict.youdao.com/search?q=' + text;
         case 'Google':
             text = text.replace(/\s+/mg, '%20');
-            return 'https://translate.google.com/#auto/zh-CN/' + text;
+            if (/[^\u0000-\u007F]+/.test(text)) {
+                // Contains non-ascii code, so we assume it is to be translated into English.
+                return 'https://translate.google.com/#auto/en/' + text;
+            } else {
+                return 'https://translate.google.com/#auto/zh-CN/' + text;
+            }
+        case 'zdic':
+            // TODO
+            //text = text.replace(/\s+/mg, '%20');
+            //return 'http://www.zdic.net/' + text;
+            return 'null';
     }
 }
 
@@ -64,11 +74,38 @@ function format_html_dict_cn(data, url) {
     var basic_el = el.getElementsByClassName( 'layout detail' );
 
     if (basic_el.length == 0) {
-        basic_el = el.getElementsByClassName( 'basic clearfix' );
+        basic_el = el.getElementsByClassName( 'dict-basic-ul' );
+        if (basic_el && basic_el.length > 0) {
+            var i, j;
+            var notWanted = false;
+            for (i=0; i<basic_el[0].childNodes.length; i++) {
+                console.log(i,basic_el[0].childNodes[i].hasChildNodes(), notWanted);
+                if (basic_el[0].childNodes[i].hasChildNodes()) {
+                    for (j=0; j<basic_el[0].childNodes[i].childNodes.length; j++) {
+                        console.log(i,j,basic_el[0].childNodes[i].childNodes[j].tagName);
+                        if (basic_el[0].childNodes[i].childNodes[j].tagName &&
+                            basic_el[0].childNodes[i].childNodes[j].tagName.toUpperCase() === 'SCRIPT') {
+                            notWanted = true;
+                            break;
+                        }
+                    }
+                }
+                if (notWanted) {
+                    break;
+                }
+            }
+            if (notWanted && i<basic_el[0].childNodes.length) {
+                basic_el[0].removeChild(basic_el[0].childNodes[i]);
+            }
+        }
     }
     if (basic_el.length == 0) {
         basic_el = el.getElementsByClassName( 'layout dual' );
     }
+    if (basic_el.length == 0) {
+        basic_el = el.getElementsByClassName( 'layout cn' );
+    }
+
 
     var ph = '', basic = '';
 
@@ -131,6 +168,18 @@ function format_html_youdao(data, url) {
     if (basic_el.length == 0) {
         basic_el = el.getElementsByClassName( 'pr-container more-collapse' );
     }
+    if (basic_el.length == 0) {
+        basic_el = el.getElementsByClassName( 'trans-container' );
+    }
+    var i;
+    for (i=0; i<basic_el[0].childNodes.length; i++) {
+        if (basic_el[0].childNodes[i].className === 'more-example') {
+            break;
+        }
+    }
+    if (i<basic_el[0].childNodes.length) {
+        basic_el[0].removeChild(basic_el[0].childNodes[i]);
+    }
 
     if (basic_el.length != 0) {
         //console.log(basic_el);
@@ -175,15 +224,32 @@ function handleMouseDown (e) {
 
 
 function isWordsList(text) {
-    // Only letters, digits, space, '_', and '.' are allowed/
+    // Sanitize the query text to avoid any (unimaginable) problems.
+    // Only letters, digits, space, '_', '.', and non-ascii unicode characters are allowed.
     var tmp = text;
     tmp = tmp.replace(/\s+/mg, '');
     tmp = tmp.replace(/\w+/mg, '');
     tmp = tmp.replace(/\.+/mg, '');
+    // Regular expression for Unicode Chinese. http://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
+    //tmp = tmp.replace(/[\u4E00–\u9FCC\u3400–\u4DB5\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\ud840-\ud868][\udc00-\udfff]|\ud869[\udc00-\uded6\udf00-\udfff]|[\ud86a-\ud86c][\udc00-\udfff]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud86e[\udc00-\udc1d]/mg, '');
+    //tmp = tmp.replace(/\p{InCJKUnifiedIdeographs}/mg, '');
+    //console.log(tmp);
     if (tmp.length === 0) {
+        // Pure ascii
+        console.log('Valid word: ', tmp);
         return true;
     } else {
-        return false;
+        //console.log(tmp);
+        if (/[\u0000-\u007F]+/.test(tmp)) {
+            // Still contains other ascii letters.
+            console.log('ASCII within: ', tmp);
+            return false;
+        } else {
+            // Still contains characters, but they are not ascii,
+            // so we assume it to be safe (better criteria?).
+            console.log('No ASCII within: ', tmp);
+            return true;
+        }
     }
 }
 

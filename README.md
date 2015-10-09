@@ -1,8 +1,8 @@
 [Available at Chrome web store](https://chrome.google.com/webstore/detail/english-chinese-dictionar/mhfedeapmfofjbbmgiangfhnadgloemk).
 
-This is a simple English-to-Chinese translator, based on
-[dict.cn](http://dict.cn), [Youdao dictionary](http://dict.youdao.com), and
-[Google Translate](https://translate.google.com/).
+This is a simple English-Chinese translator, based on
+[dict.cn 海词](http://dict.cn), [Youdao dictionary 有道](http://dict.youdao.com),
+[Google Translate](https://translate.google.com/), and [zdic 汉典](http://www.zdic.net/).
 
 It has two modes of usage:
 

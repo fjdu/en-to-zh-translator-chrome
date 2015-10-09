@@ -7,7 +7,7 @@
     <body>
 
         <form id="lookForWord">
-            <input type="text" name="word" id='inputword' placeholder="Enter the word" size="64">
+            <input type="text" name="word" id='inputword' placeholder="Enter the word" autocomplete="off" size="32">
             <br>
             <input type="radio" name="site" value="dict.cn" checked>dict.cn
             <br>
@@ -15,8 +15,14 @@
             <br>
             <input type="radio" name="site" value="Google">Google Translate
             <br>
+            <input type="radio" name="site" value="zdic">汉典
+            <br>
+            <br>
             <input type="submit" value="Submit" id="gotoSite">
         </form>
+
+        <br>
+        <br>
 
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
             <input type="hidden" name="cmd" value="_donations">
