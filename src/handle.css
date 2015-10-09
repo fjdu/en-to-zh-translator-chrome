@@ -1,0 +1,8 @@
+.selection_bubble {
+  visibility: hidden;
+  position: fixed;
+  top: 5;
+  left: 5;
+  z-index: 999999;
+  background:-webkit-gradient(linear, left top, left bottom, from(rgba(220,220,255,0.9)), to(rgba(255,200,220,0.9)));
+}
