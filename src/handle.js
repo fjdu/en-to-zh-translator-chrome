@@ -105,6 +105,9 @@ function format_html_dict_cn(data, url) {
     if (basic_el.length == 0) {
         basic_el = el.getElementsByClassName( 'layout cn' );
     }
+    if (basic_el.length == 0) {
+        basic_el = el.getElementsByClassName( 'basic clearfix' );
+    }
 
 
     var ph = '', basic = '';
@@ -229,7 +232,7 @@ function isWordsList(text) {
     var tmp = text;
     tmp = tmp.replace(/\s+/mg, '');
     tmp = tmp.replace(/\w+/mg, '');
-    tmp = tmp.replace(/\.+/mg, '');
+    tmp = tmp.replace(/[.-]+/mg, '');
     // Regular expression for Unicode Chinese. http://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
     //tmp = tmp.replace(/[\u4E00–\u9FCC\u3400–\u4DB5\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\ud840-\ud868][\udc00-\udfff]|\ud869[\udc00-\uded6\udf00-\udfff]|[\ud86a-\ud86c][\udc00-\udfff]|\ud86d[\udc00-\udf34\udf40-\udfff]|\ud86e[\udc00-\udc1d]/mg, '');
     //tmp = tmp.replace(/\p{InCJKUnifiedIdeographs}/mg, '');
@@ -263,6 +266,7 @@ function keyDownHandler(e) {
     var key = e.which || e.keyCode;
 
     if (key == 17) { // The ascii code for the 'control' key is 17.
+    //if (e.shiftKey || (key == 16)) { // The ascii code for the 'shift' key is 16.
 
         var text = getSelectionText();
 
@@ -285,7 +289,7 @@ function keyDownHandler(e) {
 
             $.ajax({
                 url: query_url,
-                timeout: 4000, // 4 seconds
+                timeout: 8000, // 8 seconds
                 success: 
                     function render_result(data) {
                     
@@ -294,7 +298,7 @@ function keyDownHandler(e) {
                     
                         // Add bubble to the top of the page.
                         var bubbleDOM = document.createElement('div');
-                        bubbleDOM.setAttribute('class', 'selection_bubble');
+                        bubbleDOM.setAttribute('class', 'popUpBox');
                         document.body.appendChild(bubbleDOM);
                     
                         var rect_sel = getSelectionPosition();
@@ -311,15 +315,15 @@ function keyDownHandler(e) {
                             var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
                             var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
-                            if (x + maxwidth > w) {
-                                x = w - maxheight;
+                            if (x + maxwidth + 10 > w) {
+                                x = w - maxheight - 10;
                                 if (x < 0) {
                                     x = 0;
                                 }
                             }
 
-                            if (y + maxheight > h) {
-                                y = h - maxheight;
+                            if (y + maxheight + 10 > h) {
+                                y = h - maxheight - 10;
                                 if (y < 0) {
                                     y = 0;
                                 }

@@ -1,17 +1,38 @@
-<html>
+<html style="height: 160px">
     <head>
         <script src="handle.js"></script>
         <script src="popup.js"></script>
+        <!--
+        <style>
+          #gotoSite {
+              background-color: #ccc;
+              -moz-border-radius: 5px;
+              -webkit-border-radius: 5px;
+              border-radius:6px;
+              color: #fff;
+              font-family: 'Oswald';
+              text-decoration: none;
+              cursor: pointer;
+              border:none;
+          }
+
+          #gotoSite:hover {
+              border: none;
+              background:red;
+              box-shadow: 0px 0px 1px #777;
+          }
+        </style>
+        -->
     </head>
 
-    <body>
+    <body style="height: 160px">
 
         <form id="lookForWord">
             <input type="text" name="word" id='inputword' placeholder="Enter the word" autocomplete="off" size="32">
             <br>
-            <input type="radio" name="site" value="dict.cn" checked>dict.cn
+            <input type="radio" name="site" value="dict.cn" checked>海词
             <br>
-            <input type="radio" name="site" value="YoudaoHttp">Youdao
+            <input type="radio" name="site" value="YoudaoHttp">有道
             <br>
             <input type="radio" name="site" value="Google">Google Translate
             <br>
@@ -22,7 +43,6 @@
         </form>
 
         <br>
-        <br>
 
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
             <input type="hidden" name="cmd" value="_donations">
@@ -32,7 +52,7 @@
             <input type="hidden" name="no_note" value="0">
             <input type="hidden" name="currency_code" value="USD">
             <input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest">
-            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" height="10" alt="PayPal - The safer, easier way to pay online!">
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" height="14" alt="PayPal - The safer, easier way to pay online!" title="Donate to the author with PayPal">
             <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
         </form>
 
